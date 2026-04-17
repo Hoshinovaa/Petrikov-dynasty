@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 
 type NodeType = {
@@ -92,10 +92,10 @@ const data: NodeType = {
 function NodeCard({ node }: { node: NodeType }) {
   return (
     <motion.div
-      whileHover={{ scale: 1.05 }}
-      className="w-72 h-[440px] bg-gradient-to-b from-[#0f2a44] via-[#0a1c2f] to-black rounded-2xl shadow-[0_0_50px_rgba(255,200,0,0.25)] border border-yellow-500/30 flex flex-col overflow-hidden"
+      whileHover={{ scale: 1.25 }}
+      className="w-96 h-[600px] bg-gradient-to-b from-[#0f2a44] via-[#0a1c2f] to-black rounded-2xl shadow-[0_0_50px_rgba(255,200,0,0.25)] border border-yellow-500/30 flex flex-col overflow-hidden"
     >
-      <div className="w-full h-[300px] overflow-hidden">
+      <div className="w-full h-[420px] overflow-hidden">
         <img
           src={node.photo || "/photos/default.jpg"}
           className="w-full h-full object-cover scale-110 hover:scale-125 transition duration-500"
@@ -103,11 +103,11 @@ function NodeCard({ node }: { node: NodeType }) {
       </div>
 
       <div className="flex flex-col items-center justify-center flex-1 bg-black/80">
-        <span className="text-xl text-yellow-300 font-semibold">
+        <span className="text-4xl text-yellow-300 font-semibold">
           {node.name}
         </span>
 
-        <span className="text-sm text-yellow-500/60 mt-1">
+        <span className="text-2xl text-yellow-500/60 mt-1">
           {node.role || "Family Member"}
         </span>
       </div>
@@ -148,10 +148,10 @@ function TreeNode({
               <div className="w-full h-px bg-yellow-500/40" />
             )}
 
-            <div className="flex gap-20 mt-2">
+            <div className="flex gap-22 mt-2">
               {node.children.map((child, i) => (
                 <div key={i} className="flex flex-col items-center">
-                  <div className="w-px h-6 bg-yellow-500/40" />
+                  <div className="w-px h-15 bg-yellow-500/40" />
                   <TreeNode node={child} onSelect={onSelect} />
                 </div>
               ))}
@@ -164,11 +164,50 @@ function TreeNode({
 }
 
 export default function Home() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
+  const [bounds, setBounds] = useState({
+    left: -1000,
+    right: 1000,
+    top: -500,
+    bottom: 500,
+  });
+
+  useEffect(() => {
+    const updateBounds = () => {
+      if (!containerRef.current) return;
+
+      const rect = containerRef.current.getBoundingClientRect();
+
+      const limitX = rect.width * (1 - scale);
+      const limitY = rect.height * (1 - scale);
+
+      setBounds({
+        left: -limitX,
+        right: limitX,
+        top: -limitY,
+        bottom: limitY,
+      });
+    };
+
+    updateBounds();
+    window.addEventListener("resize", updateBounds);
+    return () => window.removeEventListener("resize", updateBounds);
+  }, [scale]);
+
   const [selectedNode, setSelectedNode] = useState<NodeType | null>(null);
+  const handleWheel = (e: React.WheelEvent) => {
+    e.preventDefault();
+
+    const delta = -e.deltaY * 0.0008; // lebih smooth
+    setScale((prev) => {
+      const next = prev + delta;
+      return Math.min(Math.max(next, 0.2), 2);
+    });
+  };
 
   return (
-    <div className="bg-gradient-to-b from-black via-[#0a1c2f] to-black text-white min-h-screen">
+    <div className="bg-gradient-to-b from-black via-[#0a1c2f] to-black text-white h-screen overflow-hidden select-none">
 
       {/* NAVBAR */}
       <nav className="flex justify-between items-center px-10 py-6 border-b border-yellow-500/20">
@@ -181,11 +220,26 @@ export default function Home() {
       </nav>
 
       {/* TREE */}
-      <section className="flex justify-center py-10">
-        <div style={{ transform: `scale(${scale})` }}>
-          <TreeNode node={data} onSelect={setSelectedNode} />
-        </div>
-      </section>
+      <div ref={containerRef} className="w-full h-full overflow-hidden">
+        <section
+          onWheel={handleWheel}
+          className="w-full h-full flex items-start justify-center overflow-hidden"
+        >
+          <motion.div
+          drag
+          dragConstraints={bounds}
+          dragElastic={0.05}
+          dragMomentum={false}
+          className="cursor-grab active:cursor-grabbing"
+          style={{
+            scale: scale,
+            transformOrigin: "center",
+          }}
+          >
+            <TreeNode node={data} onSelect={setSelectedNode} />
+          </motion.div>
+        </section>
+      </div>
 
       {/* 🔥 POPUP BESAR */}
       {selectedNode && (
@@ -235,7 +289,7 @@ export default function Home() {
               {selectedNode.nationality || "-"}
             </p>
 
-            <div className="w-1/2 h-px bg-gradient-to-r from-transparent via-yellow-400 to-transparent mt-6"></div>
+            <div className="w-2/3 h-[2px] bg-gradient-to-r from-transparent via-yellow-400 to-transparent mt-4 opacity-80" />
           </motion.div>
         </div>
       )}
