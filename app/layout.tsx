@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Петриков",
-  description: "Made by Hoshinovaa",
+  description: "From Russia to San Andreas, Develop by Hoshinova",
 };
 
 export default function RootLayout({
