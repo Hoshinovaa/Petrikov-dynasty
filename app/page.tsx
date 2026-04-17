@@ -37,7 +37,7 @@ export default function LandingPage() {
 
         {/* ✅ BUTTON FIX */}
         <div className="mt-10">
-          <Link href="/tree">
+          <Link href="/dynasty">
             <button className="px-10 py-4 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-semibold rounded-full shadow-[0_0_25px_rgba(255,200,0,0.6)] hover:scale-105 transition">
               View Petrikov Dynasty
             </button>
