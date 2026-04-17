@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Петриков",
-  description: "Made by Hoshinova",
+  description: "Made by Hoshinovaa",
 };
 
 export default function RootLayout({
