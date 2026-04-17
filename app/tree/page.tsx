@@ -31,20 +31,28 @@ const data: NodeType = {
   },
   partnerType: "angkat",
   children: [
-    { name: "Eldric", relation: "kandung" },
+    { name: "Eldric", fullName: "Eldric Petrikov", dob: "05 April 1998", nationality: "Germany", relation: "kandung" },
     {
       name: "Allan",
-      fullName: "Allan Petrikov",
-      dob: "12 March 1995",
-      nationality: "Russian",
+      fullName: "Allan Hehe Petrikov",
+      dob: "22 February 1991",
+      nationality: "France",
       relation: "kandung",
-      partner: { name: "Lily" },
+      partner: {
+        name: "Lily",
+        fullName: "Liliana A Petrikov",
+        dob: "08 May 2005",
+        nationality: "Indonesia",
+      },
       partnerType: "kandung",
       children: [
         {
           name: "Joeru",
+          fullName: "Joeru Ashford Petrikov",
+          dob: "11 July 1998",
+          nationality: "Indonesia",
           children: [
-            { name: "Yuzu" },
+            { name: "Yuzu", fullName: "Yuzu Lucilfer", dob: "24 March 1999", nationality: "Indonesia" },
             { name: "Selene" },
           ],
         },
@@ -57,7 +65,6 @@ const data: NodeType = {
       fullName: "Kitsu Ryouta Petrikov",
       dob: "20 July 1998",
       nationality: "Japanese",
-      relation: "kandung",
       photo: "/photos/kitsu.png",
       children: [{ name: "Michie" }],
     },
@@ -67,25 +74,18 @@ const data: NodeType = {
       dob: "15 August 2000",
       nationality: "Russian",
       photo: "/photos/Zah.png",
-      relation: "kandung",
     },
-    {
-      name: "Stefan",
-      relation: "kandung",
-      partner: { name: "Naya" },
-    },
+    { name: "Stefan", partner: { name: "Naya" } },
     {
       name: "Nika",
-      relation: "kandung",
       partner: { name: "Niko" },
-      partnerType: "kandung",
       children: [
         { name: "Sophia" },
         { name: "Sonya" },
-        { name: "Lupa namanya", relation: "angkat" },
+        { name: "Lupa namanya" },
       ],
     },
-    { name: "Cecyl", relation: "kandung" },
+    { name: "Cecyl" },
   ],
 };
 
@@ -93,13 +93,7 @@ function NodeCard({ node }: { node: NodeType }) {
   return (
     <motion.div
       whileHover={{ scale: 1.05 }}
-      className="
-        relative z-10 w-72 h-[440px]
-        bg-gradient-to-b from-[#0f2a44] via-[#0a1c2f] to-black
-        rounded-2xl shadow-[0_0_50px_rgba(255,200,0,0.25)]
-        border border-yellow-500/30
-        flex flex-col overflow-hidden
-      "
+      className="w-72 h-[440px] bg-gradient-to-b from-[#0f2a44] via-[#0a1c2f] to-black rounded-2xl shadow-[0_0_50px_rgba(255,200,0,0.25)] border border-yellow-500/30 flex flex-col overflow-hidden"
     >
       <div className="w-full h-[300px] overflow-hidden">
         <img
@@ -109,15 +103,14 @@ function NodeCard({ node }: { node: NodeType }) {
       </div>
 
       <div className="flex flex-col items-center justify-center flex-1 bg-black/80">
-        <span className="text-xl text-yellow-300 tracking-widest font-semibold">
+        <span className="text-xl text-yellow-300 font-semibold">
           {node.name}
         </span>
 
-        <span className="text-sm text-yellow-500/60 mt-1 tracking-wide">
+        <span className="text-sm text-yellow-500/60 mt-1">
           {node.role || "Family Member"}
         </span>
-
-        </div>
+      </div>
     </motion.div>
   );
 }
@@ -129,72 +122,42 @@ function TreeNode({
   node: NodeType;
   onSelect: (n: NodeType) => void;
 }) {
-  const [open, setOpen] = useState(true);
-
   return (
     <div className="flex flex-col items-center relative">
-
-      {/* NODE + PARTNER */}
-      <div className="flex items-center gap-6 relative z-10">
-        <div
-          onClick={(e) => {
-            e.stopPropagation();
-            onSelect(node);
-          }}
-        >
+      <div className="flex items-center gap-6">
+        <div onClick={(e) => { e.stopPropagation(); onSelect(node); }}>
           <NodeCard node={node} />
         </div>
 
         {node.partner && (
           <>
-            <div
-              className={`w-10 ${
-                node.partnerType === "angkat"
-                  ? "border-t border-dashed border-yellow-500/50"
-                  : "h-px bg-yellow-500/40"
-              }`}
-            />
-
-            <div
-              onClick={(e) => {
-                e.stopPropagation();
-                onSelect(node.partner!);
-              }}
-            >
+            <div className="w-10 h-px bg-yellow-500/40" />
+            <div onClick={(e) => { e.stopPropagation(); onSelect(node.partner!); }}>
               <NodeCard node={node.partner} />
             </div>
           </>
         )}
       </div>
-      {/* GARIS */}
-      {node.children && open && (
-        <div className="flex justify-center -mt-2">
-          <div className="w-px h-10  bg-yellow-500/40"></div>
-        </div>
-      )}
 
-      {/* CHILDREN */}
-      {node.children && open && (
-        <div className="flex flex-col items-center">
+      {node.children && (
+        <>
+          <div className="w-px h-10 bg-yellow-500/40 mt-2" />
 
-          {node.children.length > 1 && (
-            <div className="relative flex justify-center w-full">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[calc(100%-6rem)] h-px bg-yellow-500/40"></div>
+          <div className="flex flex-col items-center">
+            {node.children.length > 1 && (
+              <div className="w-full h-px bg-yellow-500/40" />
+            )}
+
+            <div className="flex gap-20 mt-2">
+              {node.children.map((child, i) => (
+                <div key={i} className="flex flex-col items-center">
+                  <div className="w-px h-6 bg-yellow-500/40" />
+                  <TreeNode node={child} onSelect={onSelect} />
+                </div>
+              ))}
             </div>
-          )}
-
-          <div className="flex gap-22 mt-1 items-start">
-            {node.children.map((child, i) => (
-              <div
-                key={i}
-                className="flex flex-col items-center min-h-[280px]"
-              >
-                <div className="w-px h-7 bg-yellow-500/40" />
-                <TreeNode node={child} onSelect={onSelect} />
-              </div>
-            ))}
           </div>
-        </div>
+        </>
       )}
     </div>
   );
@@ -205,13 +168,11 @@ export default function Home() {
   const [selectedNode, setSelectedNode] = useState<NodeType | null>(null);
 
   return (
-    <div className="bg-gradient-to-b from-black via-[#0a1c2f] to-black text-white min-h-screen overflow-auto">
+    <div className="bg-gradient-to-b from-black via-[#0a1c2f] to-black text-white min-h-screen">
 
       {/* NAVBAR */}
       <nav className="flex justify-between items-center px-10 py-6 border-b border-yellow-500/20">
-        <h1 className="text-xl font-bold text-yellow-400">
-          PETRIKOV
-        </h1>
+        <h1 className="text-xl font-bold text-yellow-400">PETRIKOV</h1>
 
         <div className="flex gap-3">
           <button onClick={() => setScale(s => s + 0.2)} className="px-3 py-1 bg-yellow-500/20 rounded">+</button>
@@ -226,40 +187,56 @@ export default function Home() {
         </div>
       </section>
 
-      {/* POPUP */}
+      {/* 🔥 POPUP BESAR */}
       {selectedNode && (
         <div
-          className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50"
+          className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50"
           onClick={() => setSelectedNode(null)}
         >
-          <div
-            className="bg-[#0a1c2f] border border-yellow-500/30 rounded-2xl p-6 w-80 text-center"
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="
+              w-[90vw] h-auto max-w-[1100px]
+              bg-gradient-to-b from-[#0f2a44] via-[#0a1c2f] to-black
+              rounded-3xl shadow-[0_0_50px_rgba(255,200,0,0.25)]
+              flex flex-col items-center justify-center text-center
+              border border-yellow-500/30 p-10
+            "
             onClick={(e) => e.stopPropagation()}
           >
-            <img
-              src={selectedNode.photo || "/photos/default.jpg"}
-              className="w-full h-48 object-contain mb-4"
-            />
+            {/* CLOSE */}
+            <button
+              onClick={() => setSelectedNode(null)}
+              className="absolute top-5 right-6 text-gray-500 text-xl"
+            >
+              ✕
+            </button>
 
-            <h2 className="text-xl text-yellow-300 font-bold">
+            {/* FOTO */}
+            <div className="w-full h-[60%] overflow-hidden flex items-center justify-center mb-12">
+              <img
+                src={selectedNode.photo || "/photos/default.jpg"}
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            {/* NAMA */}
+            <h2 className="text-5xl font-semibold text-yellow-300">
               {selectedNode.fullName || selectedNode.name}
             </h2>
 
-            <p className="text-yellow-400/70 mt-2">
+            {/* INFO */}
+            <p className="text-3xl text-yellow-500/60 mt-4">
               {selectedNode.dob || "-"}
             </p>
 
-            <p className="text-yellow-400/70">
+            <p className="text-3xl text-yellow-500/60">
               {selectedNode.nationality || "-"}
             </p>
 
-            <button
-              onClick={() => setSelectedNode(null)}
-              className="mt-4 px-4 py-2 bg-yellow-500/20 rounded"
-            >
-              Close
-            </button>
-          </div>
+            <div className="w-1/2 h-px bg-gradient-to-r from-transparent via-yellow-400 to-transparent mt-6"></div>
+          </motion.div>
         </div>
       )}
     </div>
