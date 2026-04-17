@@ -67,7 +67,7 @@ export const familydata: NodeType = {
       name: "Zah",
       fullName: "Zah Petrikov",
       dob: "15 August 2000",
-      nationality: "Russian",
+      nationality: "Japan",
       photo: "/photos/Zah.png",
     },
     { name: "Stefan", partner: { name: "Naya" } },
