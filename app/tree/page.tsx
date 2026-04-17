@@ -2,8 +2,9 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import { familydata } from "@/data/familydata";
 
-type NodeType = {
+export type NodeType = {
   name: string;
   fullName?: string;
   dob?: string;
@@ -14,79 +15,6 @@ type NodeType = {
   partnerType?: "kandung" | "angkat";
   relation?: "kandung" | "angkat";
   children?: NodeType[];
-};
-
-const data: NodeType = {
-  name: "Simon",
-  fullName: "Simon Petrikov",
-  dob: "1 January 1970",
-  nationality: "Russian",
-  photo: "/photos/default.jpg",
-  partner: {
-    name: "Lyla",
-    fullName: "Lyla Petrikov",
-    dob: "5 May 1975",
-    nationality: "Russian",
-    photo: "/photos/default.jpg",
-  },
-  partnerType: "angkat",
-  children: [
-    { name: "Eldric", fullName: "Eldric Petrikov", dob: "05 April 1998", nationality: "Germany", relation: "kandung" },
-    {
-      name: "Allan",
-      fullName: "Allan Hehe Petrikov",
-      dob: "22 February 1991",
-      nationality: "France",
-      relation: "kandung",
-      partner: {
-        name: "Lily",
-        fullName: "Liliana A Petrikov",
-        dob: "08 May 2005",
-        nationality: "Indonesia",
-      },
-      partnerType: "kandung",
-      children: [
-        {
-          name: "Joeru",
-          fullName: "Joeru Ashford Petrikov",
-          dob: "11 July 1998",
-          nationality: "Indonesia",
-          children: [
-            { name: "Yuzu", fullName: "Yuzu Lucilfer", dob: "24 March 1999", nationality: "Indonesia" },
-            { name: "Selene" },
-          ],
-        },
-        { name: "Graviel" },
-        { name: "Naollie" },
-      ],
-    },
-    {
-      name: "Kitsu",
-      fullName: "Kitsu Ryouta Petrikov",
-      dob: "20 July 1998",
-      nationality: "Japanese",
-      photo: "/photos/kitsu.png",
-      children: [{ name: "Michie" }],
-    },
-    {
-      name: "Zah",
-      fullName: "Zah Petrikov",
-      dob: "15 August 2000",
-      nationality: "Russian",
-      photo: "/photos/Zah.png",
-    },
-    { name: "Stefan", partner: { name: "Naya" } },
-    {
-      name: "Nika",
-      partner: { name: "Niko" },
-      children: [
-        { name: "Sophia" },
-        { name: "Sonya" },
-        { name: "Lupa namanya" },
-      ],
-    },
-    { name: "Cecyl" },
-  ],
 };
 
 function NodeCard({ node }: { node: NodeType }) {
@@ -103,11 +31,11 @@ function NodeCard({ node }: { node: NodeType }) {
       </div>
 
       <div className="flex flex-col items-center justify-center flex-1 bg-black/80">
-        <span className="text-4xl text-yellow-300 font-semibold">
+        <span className="text-3xl text-yellow-300 font-semibold">
           {node.name}
         </span>
 
-        <span className="text-2xl text-yellow-500/60 mt-1">
+        <span className="text-xl text-yellow-500/60 mt-1">
           {node.role || "Family Member"}
         </span>
       </div>
@@ -297,7 +225,7 @@ export default function Home() {
             transformOrigin: "center",
           }}
           >
-            <TreeNode node={data} onSelect={setSelectedNode} isRoot />
+            <TreeNode node={familydata} onSelect={setSelectedNode} isRoot />
           </motion.div>
         </section>
       </div>
