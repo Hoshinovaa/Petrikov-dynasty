@@ -20,8 +20,8 @@ export const familydata: NodeType = {
   partner: {
     name: "Lyla",
     fullName: "Lyla Petrikov",
-    dob: "5 May 1975",
-    nationality: "Russian",
+    dob: "01 November 2002",
+    nationality: "Indonesia",
     photo: "/photos/default.jpg",
   },
   partnerType: "angkat",
