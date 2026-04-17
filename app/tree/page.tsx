@@ -93,9 +93,9 @@ function NodeCard({ node }: { node: NodeType }) {
   return (
     <motion.div
       whileHover={{ scale: 1.25 }}
-      className="w-96 h-[600px] bg-gradient-to-b from-[#0f2a44] via-[#0a1c2f] to-black rounded-2xl shadow-[0_0_50px_rgba(255,200,0,0.25)] border border-yellow-500/30 flex flex-col overflow-hidden"
+      className="w-56 h-[360px] bg-gradient-to-b from-[#0f2a44] via-[#0a1c2f] to-black rounded-2xl shadow-[0_0_50px_rgba(255,200,0,0.25)] border border-yellow-500/30 flex flex-col overflow-hidden"
     >
-      <div className="w-full h-[420px] overflow-hidden">
+      <div className="w-full h-[240px] overflow-hidden">
         <img
           src={node.photo || "/photos/default.jpg"}
           className="w-full h-full object-cover scale-110 hover:scale-125 transition duration-500"
@@ -118,20 +118,48 @@ function NodeCard({ node }: { node: NodeType }) {
 function TreeNode({
   node,
   onSelect,
+  isRoot = false,
 }: {
   node: NodeType;
   onSelect: (n: NodeType) => void;
+  isRoot?: boolean;
 }) {
   return (
     <div className="flex flex-col items-center relative">
-      <div className="flex items-center gap-6">
+
+      {/* TITLE KHUSUS ROOT */}
+      {isRoot && (
+        <h1 className="
+          text-[56px] md:text-[88px]
+          font-serif font-semibold
+          tracking-[0.2em]
+          text-transparent bg-clip-text
+          bg-[linear-gradient(90deg,#facc15,#fde68a,#fbbf24,#facc15)]
+          bg-[length:200%_200%]
+          animate-gradient-x
+          mb-16
+        ">
+          Петриков
+        </h1>
+      )}
+
+      {/* NODE + PARTNER */}
+      <div className="flex items-center gap-4">
         <div onClick={(e) => { e.stopPropagation(); onSelect(node); }}>
           <NodeCard node={node} />
         </div>
 
         {node.partner && (
           <>
-            <div className="w-10 h-px bg-yellow-500/40" />
+            {/* garis partner */}
+            <div
+              className={`w-15 h-px ${
+                node.partnerType === "angkat"
+                  ? "border-t-2 border-dashed border-yellow-500/40"
+                  : "bg-yellow-500/40"
+              }`}
+            />
+
             <div onClick={(e) => { e.stopPropagation(); onSelect(node.partner!); }}>
               <NodeCard node={node.partner} />
             </div>
@@ -139,20 +167,49 @@ function TreeNode({
         )}
       </div>
 
+      {/* CHILDREN */}
       {node.children && (
         <>
-          <div className="w-px h-10 bg-yellow-500/40 mt-2" />
+          {/* garis turun dari parent */}
+          <div
+            className={`w-[3px] h-10 mt-2 ${
+              node.relation === "angkat"
+                ? "border-l-2 border-dashed border-yellow-500/40"
+                : "bg-yellow-500/40"
+            }`}
+          />
 
           <div className="flex flex-col items-center">
+
+            {/* garis horizontal */}
             {node.children.length > 1 && (
-              <div className="w-full h-px bg-yellow-500/40" />
+              <div
+                className={`w-full h-[3px] ${
+                  node.relation === "angkat"
+                    ? "border-t-2 border-dashed border-yellow-500/40"
+                    : "bg-yellow-500/40"
+                }`}
+              />
             )}
 
-            <div className="flex gap-22 mt-2">
+            {/* list anak */}
+            <div className="flex gap-23 mt-0">
               {node.children.map((child, i) => (
                 <div key={i} className="flex flex-col items-center">
-                  <div className="w-px h-15 bg-yellow-500/40" />
-                  <TreeNode node={child} onSelect={onSelect} />
+                  
+                  {/* garis ke child */}
+                  <div
+                    className={`w-[3px] h-10 ${
+                      child.relation === "angkat"
+                        ? "border-l-2 border-dashed border-yellow-500/40"
+                        : "bg-yellow-500/40"
+                    }`}
+                  />
+
+                  <TreeNode
+                    node={child}
+                    onSelect={onSelect}
+                  />
                 </div>
               ))}
             </div>
@@ -179,9 +236,11 @@ export default function Home() {
 
       const rect = containerRef.current.getBoundingClientRect();
 
-      const limitX = rect.width * (1 - scale);
-      const limitY = rect.height * (1 - scale);
+      const minLimit = 2000; // bebas, bisa 200–500
 
+      const limitX = Math.max(rect.width * (1 - scale), minLimit);
+      const limitY = Math.max(rect.height * (1 - scale), minLimit);
+    
       setBounds({
         left: -limitX,
         right: limitX,
@@ -193,6 +252,8 @@ export default function Home() {
     updateBounds();
     window.addEventListener("resize", updateBounds);
     return () => window.removeEventListener("resize", updateBounds);
+    if (scale <= 1) {
+    }
   }, [scale]);
 
   const [selectedNode, setSelectedNode] = useState<NodeType | null>(null);
@@ -223,7 +284,7 @@ export default function Home() {
       <div ref={containerRef} className="w-full h-full overflow-hidden">
         <section
           onWheel={handleWheel}
-          className="w-full h-full flex items-start justify-center overflow-hidden"
+          className="w-full h-full flex items-center justify-center overflow-hidden"
         >
           <motion.div
           drag
@@ -236,7 +297,7 @@ export default function Home() {
             transformOrigin: "center",
           }}
           >
-            <TreeNode node={data} onSelect={setSelectedNode} />
+            <TreeNode node={data} onSelect={setSelectedNode} isRoot />
           </motion.div>
         </section>
       </div>
@@ -251,7 +312,7 @@ export default function Home() {
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             className="
-              w-[90vw] h-auto max-w-[1100px]
+              w-[30vw] h-auto max-w-[1100px]
               bg-gradient-to-b from-[#0f2a44] via-[#0a1c2f] to-black
               rounded-3xl shadow-[0_0_50px_rgba(255,200,0,0.25)]
               flex flex-col items-center justify-center text-center
@@ -262,13 +323,13 @@ export default function Home() {
             {/* CLOSE */}
             <button
               onClick={() => setSelectedNode(null)}
-              className="absolute top-5 right-6 text-gray-500 text-xl"
+              className="absolute top-4 right-4 text-gray-400 hover:text-yellow-400 text-2xl"
             >
               ✕
             </button>
 
             {/* FOTO */}
-            <div className="w-full h-[60%] overflow-hidden flex items-center justify-center mb-12">
+            <div className="w-full h-[60%] overflow-hidden flex items-center justify-center mb-3">
               <img
                 src={selectedNode.photo || "/photos/default.jpg"}
                 className="w-full h-full object-cover"
@@ -276,20 +337,20 @@ export default function Home() {
             </div>
 
             {/* NAMA */}
-            <h2 className="text-5xl font-semibold text-yellow-300">
+            <h2 className="text-[24px] font-semibold text-yellow-300">
               {selectedNode.fullName || selectedNode.name}
             </h2>
 
             {/* INFO */}
-            <p className="text-3xl text-yellow-500/60 mt-4">
+            <p className="text-[16px] text-yellow-500/60 mt-0">
               {selectedNode.dob || "-"}
             </p>
 
-            <p className="text-3xl text-yellow-500/60">
+            <p className="text-[16px] text-yellow-500/60 mb-0">
               {selectedNode.nationality || "-"}
             </p>
 
-            <div className="w-2/3 h-[2px] bg-gradient-to-r from-transparent via-yellow-400 to-transparent mt-4 opacity-80" />
+            <div className="w-2/3 h-[2px] bg-gradient-to-r from-transparent via-yellow-400 to-transparent mt-2 opacity-80" />
           </motion.div>
         </div>
       )}

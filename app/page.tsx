@@ -1,4 +1,4 @@
-"use client";
+import Link from "next/link";
 
 export default function LandingPage() {
   return (
@@ -35,14 +35,13 @@ export default function LandingPage() {
           From the cold lands of Russia to the streets of San Andreas.
         </p>
 
-        {/* BUTTON (NAIK KE ATAS) */}
+        {/* ✅ BUTTON FIX */}
         <div className="mt-10">
-          <button
-            onClick={() => (window.location.href = "/tree")}
-            className="px-10 py-4 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-semibold rounded-full shadow-[0_0_25px_rgba(255,200,0,0.6)] hover:scale-105 transition"
-          >
-            View Petrikov Dynasty
-          </button>
+          <Link href="/tree">
+            <button className="px-10 py-4 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-semibold rounded-full shadow-[0_0_25px_rgba(255,200,0,0.6)] hover:scale-105 transition">
+              View Petrikov Dynasty
+            </button>
+          </Link>
         </div>
 
       </section>
