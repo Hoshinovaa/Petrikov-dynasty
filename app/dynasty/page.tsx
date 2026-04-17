@@ -24,9 +24,10 @@ function NodeCard({ node }: { node: NodeType }) {
       className="w-56 h-[360px] bg-gradient-to-b from-[#0f2a44] via-[#0a1c2f] to-black rounded-2xl shadow-[0_0_50px_rgba(255,200,0,0.25)] border border-yellow-500/30 flex flex-col overflow-hidden"
     >
       <div className="w-full h-[240px] overflow-hidden">
+        
         <img
           src={node.photo || "/photos/default.jpg"}
-          className="w-full h-full object-cover scale-110 hover:scale-125 transition duration-500"
+          className="w-full h-full justify-center object-contain scale-130 hover:scale-145 transition duration-500"
         />
       </div>
 
