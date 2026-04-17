@@ -35,7 +35,7 @@ function NodeCard({ node }: { node: NodeType }) {
           {node.name}
         </span>
 
-        <span className="text-xl text-yellow-500/60 mt-1">
+        <span className="text-2xl text-yellow-500/60 mt-1">
           {node.role || "Family Member"}
         </span>
       </div>
@@ -164,8 +164,7 @@ export default function Home() {
 
       const rect = containerRef.current.getBoundingClientRect();
 
-      const minLimit = 2000; // bebas, bisa 200–500
-
+      const minLimit = 2000;
       const limitX = Math.max(rect.width * (1 - scale), minLimit);
       const limitY = Math.max(rect.height * (1 - scale), minLimit);
     
@@ -188,7 +187,7 @@ export default function Home() {
   const handleWheel = (e: React.WheelEvent) => {
     e.preventDefault();
 
-    const delta = -e.deltaY * 0.0008; // lebih smooth
+    const delta = -e.deltaY * 0.0008;
     setScale((prev) => {
       const next = prev + delta;
       return Math.min(Math.max(next, 0.2), 2);
@@ -199,7 +198,7 @@ export default function Home() {
     <div className="bg-gradient-to-b from-black via-[#0a1c2f] to-black text-white h-screen overflow-hidden select-none">
 
       {/* NAVBAR */}
-      <nav className="flex justify-between items-center px-10 py-6 border-b border-yellow-500/20">
+      <nav className="flex justify-between items-center px-10 py-3 border-b border-yellow-500/20">
         <h1 className="text-xl font-bold text-yellow-400">PETRIKOV</h1>
 
         <div className="flex gap-3">
