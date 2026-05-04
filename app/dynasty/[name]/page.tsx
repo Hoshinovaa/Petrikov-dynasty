@@ -141,7 +141,7 @@ export default function Page() {
   const params = useParams();
     
   const [selectedNode, setSelectedNode] = useState<any | null>(null);
-  const [scale, setScale] = useState(0.8);
+  const [scale, setScale] = useState(0.75);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [bounds, setBounds] = useState({
