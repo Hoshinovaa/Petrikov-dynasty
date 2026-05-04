@@ -209,7 +209,7 @@ export default function Page() {
 
         <h1
           onClick={() => router.push("/")}
-          className="mx-auto text-xl font-bold text-yellow-400 cursor-pointer"
+          className="text-yellow-400 cursor-pointer hover:text-yellow-300 transition mx-auto text-xl font-bold cursor-pointer"
         >
           PETRIKOV
         </h1>
