@@ -53,7 +53,7 @@ function NodeCard({ node, onSelect, }: { node: any; onSelect: (n: any) => void; 
           <img
             src={node.photo}
             onError={() => setImgError(true)}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-contain scale-130 hover:scale-145 transition duration-500"
           />
         )}
       </div>
