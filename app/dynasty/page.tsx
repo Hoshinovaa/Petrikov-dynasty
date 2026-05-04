@@ -196,8 +196,8 @@ export default function Home() {
         <h1 className="text-xl font-bold text-yellow-400">PETRIKOV</h1>
 
         <div className="flex gap-3">
-          <button onClick={() => setScale(s => s + 0.2)} className="px-3 py-1 bg-yellow-500/20 rounded">+</button>
-          <button onClick={() => setScale(s => s - 0.2)} className="px-3 py-1 bg-yellow-500/20 rounded">-</button>
+          <button onClick={() => setScale(s => s + 0.2)} className="px-3 py-1 bg-yellow-500/20 rounded text-yellow-400">+</button>
+          <button onClick={() => setScale(s => s - 0.2)} className="px-3 py-1 bg-yellow-500/20 rounded text-yellow-400">-</button>
         </div>
       </nav>
 

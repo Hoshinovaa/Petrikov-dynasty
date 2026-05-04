@@ -145,7 +145,7 @@ function Tree({
 export default function Page() {
   const router = useRouter();
   const params = useParams();
-
+    
   const [selectedNode, setSelectedNode] = useState<any | null>(null);
   const [scale, setScale] = useState(0.8);
 
@@ -221,8 +221,8 @@ export default function Page() {
         </h1>
 
         <div className="absolute right-10 flex gap-3">
-          <button onClick={() => setScale((s) => s + 0.2)} className="px-3 py-1 bg-yellow-500/20 rounded">+</button>
-          <button onClick={() => setScale((s) => s - 0.2)} className="px-3 py-1 bg-yellow-500/20 rounded">-</button>
+          <button onClick={() => setScale((s) => s + 0.2)} className="px-3 py-1 bg-yellow-500/20 rounded text-yellow-400">+</button>
+          <button onClick={() => setScale((s) => s - 0.2)} className="px-3 py-1 bg-yellow-500/20 rounded text-yellow-400">-</button>
         </div>
       </nav>
 
