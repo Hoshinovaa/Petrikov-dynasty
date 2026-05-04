@@ -2,10 +2,12 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { familydata } from "@/data/familydata";
+import { familydata } from "../../data/familydata";
+import { useRouter } from "next/navigation";
 
 export type NodeType = {
   name: string;
+  slug: string;
   fullName?: string;
   dob?: string;
   nationality?: string;
@@ -17,6 +19,19 @@ export type NodeType = {
   children?: NodeType[];
 };
 
+/* 🔥 LIMIT SAMPAI GENERASI 2 */
+function limitToSecondGeneration(node: NodeType): NodeType {
+  return {
+    ...node,
+    partner: node.partner,
+    children: node.children?.map((child) => ({
+      ...child,
+      children: undefined,
+      partner: undefined,
+    })),
+  };
+}
+
 function NodeCard({ node }: { node: NodeType }) {
   return (
     <motion.div
@@ -24,10 +39,9 @@ function NodeCard({ node }: { node: NodeType }) {
       className="w-56 h-[360px] bg-gradient-to-b from-[#0f2a44] via-[#0a1c2f] to-black rounded-2xl shadow-[0_0_50px_rgba(255,200,0,0.25)] border border-yellow-500/30 flex flex-col overflow-hidden"
     >
       <div className="w-full h-[240px] overflow-hidden">
-        
         <img
           src={node.photo || "/photos/default.jpg"}
-          className="w-full h-full justify-center object-contain scale-130 hover:scale-145 transition duration-500"
+          className="w-full h-full object-contain scale-130 hover:scale-145 transition duration-500"
         />
       </div>
 
@@ -56,7 +70,7 @@ function TreeNode({
   return (
     <div className="flex flex-col items-center relative">
 
-      {/* TITLE KHUSUS ROOT */}
+      {/* TITLE ROOT */}
       {isRoot && (
         <h1 className="
           text-[56px] md:text-[88px]
@@ -80,7 +94,6 @@ function TreeNode({
 
         {node.partner && (
           <>
-            {/* garis partner */}
             <div
               className={`w-15 h-px ${
                 node.partnerType === "angkat"
@@ -96,44 +109,22 @@ function TreeNode({
         )}
       </div>
 
-      {/* CHILDREN */}
+      {/* CHILDREN (GEN 2 ONLY) */}
       {node.children && (
         <>
-          {/* garis turun dari parent */}
-          <div
-            className={`w-[3px] h-10 mt-2 ${
-              node.relation === "angkat"
-                ? "border-l-2 border-dashed border-yellow-500/40"
-                : "bg-yellow-500/40"
-            }`}
-          />
+          <div className="w-[3px] h-10 mt-2 bg-yellow-500/40" />
 
           <div className="flex flex-col items-center">
 
-            {/* garis horizontal */}
             {node.children.length > 1 && (
-              <div
-                className={`w-full h-[3px] ${
-                  node.relation === "angkat"
-                    ? "border-t-2 border-dashed border-yellow-500/40"
-                    : "bg-yellow-500/40"
-                }`}
-              />
+              <div className="w-full h-[3px] bg-yellow-500/40" />
             )}
 
-            {/* list anak */}
             <div className="flex gap-23 mt-0">
               {node.children.map((child, i) => (
                 <div key={i} className="flex flex-col items-center">
-                  
-                  {/* garis ke child */}
-                  <div
-                    className={`w-[3px] h-10 ${
-                      child.relation === "angkat"
-                        ? "border-l-2 border-dashed border-yellow-500/40"
-                        : "bg-yellow-500/40"
-                    }`}
-                  />
+
+                  <div className="w-[3px] h-10 bg-yellow-500/40" />
 
                   <TreeNode
                     node={child}
@@ -150,8 +141,10 @@ function TreeNode({
 }
 
 export default function Home() {
+  const router = useRouter();
   const containerRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(1);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [scale, setScale] = useState(0.6);
   const [bounds, setBounds] = useState({
     left: -1000,
     right: 1000,
@@ -168,23 +161,23 @@ export default function Home() {
       const minLimit = 2000;
       const limitX = Math.max(rect.width * (1 - scale), minLimit);
       const limitY = Math.max(rect.height * (1 - scale), minLimit);
-    
+
       setBounds({
         left: -limitX,
         right: limitX,
         top: -limitY,
         bottom: limitY,
       });
+
     };
 
     updateBounds();
     window.addEventListener("resize", updateBounds);
     return () => window.removeEventListener("resize", updateBounds);
-    if (scale <= 1) {
-    }
   }, [scale]);
 
   const [selectedNode, setSelectedNode] = useState<NodeType | null>(null);
+
   const handleWheel = (e: React.WheelEvent) => {
     e.preventDefault();
 
@@ -215,22 +208,28 @@ export default function Home() {
           className="w-full h-full flex items-center justify-center overflow-hidden"
         >
           <motion.div
-          drag
-          dragConstraints={bounds}
-          dragElastic={0.05}
-          dragMomentum={false}
-          className="cursor-grab active:cursor-grabbing"
-          style={{
-            scale: scale,
-            transformOrigin: "center",
-          }}
+            drag
+            dragConstraints={bounds}
+            dragElastic={0.05}
+            dragMomentum={false}
+            initial={{ x: 0, y: -50 }}
+            className="cursor-grab active:cursor-grabbing"
+            style={{
+              scale: scale,
+              transformOrigin: "center",
+            }}
           >
-            <TreeNode node={familydata} onSelect={setSelectedNode} isRoot />
+            {/* 🔥 GENERASI 1 + 2 */}
+            <TreeNode
+              node={limitToSecondGeneration(familydata)}
+              onSelect={setSelectedNode}
+              isRoot
+            />
           </motion.div>
         </section>
       </div>
 
-      {/* 🔥 POPUP BESAR */}
+      {/* POPUP */}
       {selectedNode && (
         <div
           className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50"
@@ -248,7 +247,6 @@ export default function Home() {
             "
             onClick={(e) => e.stopPropagation()}
           >
-            {/* CLOSE */}
             <button
               onClick={() => setSelectedNode(null)}
               className="absolute top-4 right-4 text-gray-400 hover:text-yellow-400 text-2xl"
@@ -256,7 +254,6 @@ export default function Home() {
               ✕
             </button>
 
-            {/* FOTO */}
             <div className="w-full h-[60%] overflow-hidden flex items-center justify-center mb-3">
               <img
                 src={selectedNode.photo || "/photos/default.jpg"}
@@ -264,12 +261,10 @@ export default function Home() {
               />
             </div>
 
-            {/* NAMA */}
             <h2 className="text-[24px] font-semibold text-yellow-300">
               {selectedNode.fullName || selectedNode.name}
             </h2>
 
-            {/* INFO */}
             <p className="text-[16px] text-yellow-500/60 mt-0">
               {selectedNode.dob || "-"}
             </p>
@@ -279,6 +274,37 @@ export default function Home() {
             </p>
 
             <div className="w-2/3 h-[2px] bg-gradient-to-r from-transparent via-yellow-400 to-transparent mt-2 opacity-80" />
+
+            {/* 🔥 SHOW MORE BUTTON */}
+            <div className="flex justify-center">
+              <button
+              onClick={() => {
+                if (!selectedNode) return;
+
+                router.push(`/dynasty/${selectedNode.slug}`);
+                }
+              }              
+                  className="
+                    mt-5
+                    px-4 py-2
+                    text-xs font-bold uppercase tracking-wide
+
+                    text-black
+                    bg-yellow-400/90
+
+                    rounded-lg
+                    shadow-sm
+
+                    hover:bg-yellow-300
+                    hover:shadow-md
+                    hover:scale-105
+
+                    transition-all duration-300
+                  "
+                >
+                  Show More
+              </button>
+            </div>
           </motion.div>
         </div>
       )}

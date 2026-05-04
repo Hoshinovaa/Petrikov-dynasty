@@ -1,5 +1,6 @@
 export type NodeType = {
   name: string;
+  slug: string;
   fullName?: string;
   dob?: string;
   nationality?: string;
@@ -13,6 +14,7 @@ export type NodeType = {
 
 export const familydata: NodeType = {
   name: "Simon",
+  slug: "simon",
   fullName: "Simon Petrikov",
   dob: "10 January",
   nationality: "Russian",
@@ -20,6 +22,7 @@ export const familydata: NodeType = {
   role: "Father",
   partner: {
     name: "Lyla",
+    slug: "lyla",
     fullName: "Lyla Petrikov",
     dob: "02 October",
     nationality: "Indonesian",
@@ -29,6 +32,7 @@ export const familydata: NodeType = {
   partnerType: "angkat",
   children: [
     { name: "Eldric",
+      slug: "eldric",
       fullName: "Eldric Petrikov",
       dob: "05 April",
       nationality: "German",
@@ -38,6 +42,7 @@ export const familydata: NodeType = {
     },
     {
       name: "Allan",
+      slug: "allan",
       fullName: "Allan Hehe Petrikov",
       dob: "22 February",
       nationality: "French",
@@ -46,6 +51,7 @@ export const familydata: NodeType = {
       role: "Second Child",
       partner: {
         name: "Lily",
+        slug: "lily",
         fullName: "Liliana A Petrikov",
         dob: "08 May",
         nationality: "Indonesian",
@@ -56,6 +62,7 @@ export const familydata: NodeType = {
       children: [
         {
           name: "Joeru",
+          slug: "joeru",
           fullName: "Joeru Ashford Petrikov",
           dob: "11 July",
           nationality: "Indonesian",
@@ -64,6 +71,7 @@ export const familydata: NodeType = {
           children: [
             {
               name: "Yuzu",
+              slug: "yuzu",
               fullName: "Yuzu Lucilfer",
               dob: "24 March",
               nationality: "Indonesian",
@@ -72,6 +80,7 @@ export const familydata: NodeType = {
             },
             {
               name: "Selene",
+              slug: "selene",
               fullName: "Selene A Petrikov",
               dob: "07 July",
               nationality: "Spanish",
@@ -81,6 +90,7 @@ export const familydata: NodeType = {
           ],
         },
         { name: "Graviel",
+          slug: "graviel",
           fullName: "Graviel F Conostra",
           dob: "02 April",
           nationality: "?",
@@ -89,6 +99,7 @@ export const familydata: NodeType = {
           relation: "angkat",
         },
         { name: "Naollie",
+          slug: "naollie",
           fullName: "Naollie Phyllova",
           dob: "04 June",
           nationality: "Indonesian",
@@ -100,6 +111,7 @@ export const familydata: NodeType = {
     },
     {
       name: "Kitsu",
+      slug: "kitsu",
       fullName: "Kitsu Ryouta Petrikov",
       dob: "20 July",
       nationality: "Japanese",
@@ -107,6 +119,7 @@ export const familydata: NodeType = {
       role: "Third Child",
       children: [{
         name: "Michie",
+        slug: "michie",
         fullName: "Michie Mizu Petrikov",
         dob: "29 August",
         nationality: "Japanese",
@@ -117,12 +130,14 @@ export const familydata: NodeType = {
     {
       name: "Zah",
       fullName: "Zah Petrikov",
+      slug: "zah",
       dob: "17 July",
       nationality: "Japanese",
       photo: "/photos/zah.png",
       role: "Fourth Child",
     },
     { name: "Stefan",
+      slug: "stefan",
       fullName: "Stefan Petrikov",
       dob: "19 September",
       nationality: "American",
@@ -130,6 +145,7 @@ export const familydata: NodeType = {
       role: "Fifth Child",
       partner: {
         name: "Naya",
+        slug: "naya",
         fullName: "Naya Melvine Petrikov",
         dob: "01 October",
         nationality: "American",
@@ -138,6 +154,7 @@ export const familydata: NodeType = {
       } },
     {
       name: "Nika",
+      slug: "nika",
       fullName: "Ryeo Nika Petrikov",
       dob: "05 May",
       nationality: "Brazilian",
@@ -145,6 +162,7 @@ export const familydata: NodeType = {
       role: "Sixth Child",
       partner: {
         name: "Niko",
+        slug: "niko",
         fullName: "Ryeo Niko",
         dob: "07 July",
         nationality: "Serbian",
@@ -154,6 +172,7 @@ export const familydata: NodeType = {
       children: [
         { 
           name: "Noir",
+          slug: "noir",
           fullName: "Ryeo Noir Petrikov",
           dob: "16 April",
           nationality: "Malaysian",
@@ -163,6 +182,7 @@ export const familydata: NodeType = {
         },
         {
           name: "Sophia",
+          slug: "sophia",
           fullName: "Ryeo Sophia Petrikov",
           dob: "28 March",
           nationality: "British",
@@ -171,6 +191,7 @@ export const familydata: NodeType = {
          },
         {
           name: "Sonya",
+          slug: "sonya",
           fullName: "Ryeo Sonya Petrikov",
           dob: "28 March",
           nationality: "British",
@@ -180,6 +201,7 @@ export const familydata: NodeType = {
       ],
     },
     { name: "Cecyl",
+      slug: "cecyl",
       fullName: "Cecylia Lysandra Petrikov",
       dob: "27 July 2005",
       nationality: "Indonesian",
