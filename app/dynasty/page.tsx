@@ -19,7 +19,7 @@ export type NodeType = {
   children?: NodeType[];
 };
 
-/* 🔥 LIMIT SAMPAI GENERASI 2 */
+/* LIMIT SAMPAI GENERASI 2 */
 function limitToSecondGeneration(node: NodeType): NodeType {
   return {
     ...node,
@@ -40,7 +40,7 @@ function NodeCard({ node }: { node: NodeType }) {
     >
       <div className="w-full h-[240px] overflow-hidden">
         <img
-          src={node.photo || "/photos/default.jpg"}
+          src={node.photo || "/photos/default.png"}
           className="w-full h-full object-contain scale-130 hover:scale-145 transition duration-500"
         />
       </div>
@@ -193,7 +193,12 @@ export default function Home() {
 
       {/* NAVBAR */}
       <nav className="flex justify-between items-center px-10 py-3 border-b border-yellow-500/20">
-        <h1 className="text-xl font-bold text-yellow-400">PETRIKOV</h1>
+        <h1
+        onClick={() => router.push("/")}
+        className="text-xl font-bold text-yellow-400 cursor-pointer hover:text-yellow-300 transition"
+        >
+          PETRIKOV
+        </h1>
 
         <div className="flex gap-3">
           <button onClick={() => setScale(s => s + 0.2)} className="px-3 py-1 bg-yellow-500/20 rounded text-yellow-400">+</button>
@@ -219,7 +224,7 @@ export default function Home() {
               transformOrigin: "center",
             }}
           >
-            {/* 🔥 GENERASI 1 + 2 */}
+            {/* GENERASI 1 + 2 */}
             <TreeNode
               node={limitToSecondGeneration(familydata)}
               onSelect={setSelectedNode}
@@ -275,7 +280,7 @@ export default function Home() {
 
             <div className="w-2/3 h-[2px] bg-gradient-to-r from-transparent via-yellow-400 to-transparent mt-2 opacity-80" />
 
-            {/* 🔥 SHOW MORE BUTTON */}
+            {/* SHOW MORE BUTTON */}
             <div className="flex justify-center">
               <button
               onClick={() => {

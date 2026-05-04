@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { useRouter, useParams } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 
-/* 🔥 FIND PERSON */
+/* FIND PERSON */
 function findPerson(node: any, slug: string): any | null {
   if (!node) return null;
 
@@ -34,26 +34,20 @@ function findPerson(node: any, slug: string): any | null {
   return null;
 }
 
-/* 🔥 CARD (UPDATED: CLICKABLE) */
-function NodeCard({
-  node,
-  onSelect,
-}: {
-  node: any;
-  onSelect: (n: any) => void;
-}) {
+/* CARD */
+function NodeCard({ node, onSelect, }: { node: any; onSelect: (n: any) => void; }) {
   const [imgError, setImgError] = useState(false);
 
   return (
     <motion.div
-      whileHover={{ scale: 1.1 }}
+      whileHover={{ scale: 1.25 }}
       onClick={(e) => {
         e.stopPropagation();
         onSelect(node);
       }}
-      className="w-56 h-[320px] cursor-pointer bg-gradient-to-b from-[#0f2a44] to-black rounded-2xl border border-yellow-500/30 flex flex-col overflow-hidden"
+      className="w-56 h-[360px] bg-gradient-to-b from-[#0f2a44] via-[#0a1c2f] to-black rounded-2xl shadow-[0_0_50px_rgba(255,200,0,0.25)] border border-yellow-500/30 flex flex-col overflow-hidden"
     >
-      {/* 🔥 IMAGE */}
+      {/* IMAGE */}
       <div className="w-full h-[220px] overflow-hidden bg-gradient-to-b from-[#0f2a44] to-black">
         {node.photo && !imgError && (
           <img
@@ -64,12 +58,12 @@ function NodeCard({
         )}
       </div>
 
-      {/* 🔥 INFO */}
+      {/* INFO */}
       <div className="flex flex-col items-center justify-center flex-1 bg-black">
-        <span className="text-2xl text-yellow-300 font-semibold">
+        <span className="text-3xl text-yellow-300 font-semibold">
           {node.name}
         </span>
-        <span className="text-yellow-500/60 text-sm">
+        <span className="text-yellow-500/60 text-2xl mt-1">
           {node.role}
         </span>
       </div>
@@ -77,7 +71,7 @@ function NodeCard({
   );
 }
 
-/* 🔥 RECURSIVE CHILDREN */
+/* RECURSIVE CHILDREN */
 function renderChildren(node: any, onSelect: (n: any) => void) {
   if (!node.children || node.children.length === 0) return null;
 
@@ -113,7 +107,7 @@ function renderChildren(node: any, onSelect: (n: any) => void) {
   );
 }
 
-/* 🔥 TREE */
+/* TREE */
 function Tree({
   node,
   onSelect,
@@ -214,7 +208,7 @@ export default function Page() {
         </button>
 
         <h1
-          onClick={() => router.push("/dynasty")}
+          onClick={() => router.push("/")}
           className="mx-auto text-xl font-bold text-yellow-400 cursor-pointer"
         >
           PETRIKOV
@@ -250,7 +244,7 @@ export default function Page() {
         </section>
       </div>
 
-      {/* 🔥 POPUP */}
+      {/* POPUP */}
       {selectedNode && (
         <div
           className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50"

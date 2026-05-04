@@ -40,6 +40,7 @@ export const familydata: NodeType = {
       photo: "/photos/eldric.png",
       role: "First Child",
     },
+
     {
       name: "Allan",
       slug: "allan",
@@ -109,6 +110,17 @@ export const familydata: NodeType = {
          },
       ],
     },
+
+    {
+      name: "Han",
+      slug: "han",
+      fullName: "Han Petrikov",
+      dob: "23 May",
+      nationality: "Indonesian",
+      photo: "/photos/han.png",
+      role: "Third Child",
+    },
+    
     {
       name: "Kitsu",
       slug: "kitsu",
@@ -116,7 +128,7 @@ export const familydata: NodeType = {
       dob: "20 July",
       nationality: "Japanese",
       photo: "/photos/kitsu.png",
-      role: "Third Child",
+      role: "Fourth Child",
       children: [{
         name: "Michie",
         slug: "michie",
@@ -127,6 +139,7 @@ export const familydata: NodeType = {
         role: "Grandchild",
       }],
     },
+    
     {
       name: "Zah",
       fullName: "Zah Petrikov",
@@ -134,15 +147,16 @@ export const familydata: NodeType = {
       dob: "17 July",
       nationality: "Japanese",
       photo: "/photos/zah.png",
-      role: "Fourth Child",
+      role: "Fifth Child",
     },
+
     { name: "Stefan",
       slug: "stefan",
       fullName: "Stefan Petrikov",
       dob: "19 September",
       nationality: "American",
       photo: "/photos/stefan.png",
-      role: "Fifth Child",
+      role: "Sixth Child",
       partner: {
         name: "Naya",
         slug: "naya",
@@ -152,6 +166,7 @@ export const familydata: NodeType = {
         photo: "/photos/naya.png",
         role: "Daughter-in-law",
       } },
+
     {
       name: "Nika",
       slug: "nika",
@@ -159,7 +174,7 @@ export const familydata: NodeType = {
       dob: "05 May",
       nationality: "Brazilian",
       photo: "/photos/nika.png",
-      role: "Sixth Child",
+      role: "Seventh Child",
       partner: {
         name: "Niko",
         slug: "niko",
@@ -200,13 +215,14 @@ export const familydata: NodeType = {
         },
       ],
     },
+
     { name: "Cecyl",
       slug: "cecyl",
       fullName: "Cecylia Lysandra Petrikov",
       dob: "27 July 2005",
       nationality: "Indonesian",
       photo: "/photos/cecyl.png",
-      role: "Seventh Child",
+      role: "Eighth Child",
     },
   ],
 };
