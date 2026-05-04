@@ -129,7 +129,7 @@ export default function Page() {
   const router = useRouter();
   const params = useParams();
 
-  const [scale, setScale] = useState(0.9);
+  const [scale, setScale] = useState(0.8);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [bounds, setBounds] = useState({
