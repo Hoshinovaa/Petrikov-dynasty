@@ -73,7 +73,7 @@ export const familydata: NodeType = {
             {
               name: "Yuzu",
               slug: "yuzu",
-              fullName: "Yuzu Lucilfer",
+              fullName: "Yuzu A Petrikov",
               dob: "24 March",
               nationality: "Indonesian",
               photo: "/photos/yuzu.png",
@@ -92,7 +92,7 @@ export const familydata: NodeType = {
         },
         { name: "Graviel",
           slug: "graviel",
-          fullName: "Graviel F Conostra",
+          fullName: "Graviel FA Petrikov",
           dob: "02 April",
           nationality: "?",
           photo: "/photos/graviel.png",
@@ -142,8 +142,8 @@ export const familydata: NodeType = {
     
     {
       name: "Zah",
-      fullName: "Zah Petrikov",
       slug: "zah",
+      fullName: "Zah Petrikov",
       dob: "17 July",
       nationality: "Japanese",
       photo: "/photos/zah.png",
