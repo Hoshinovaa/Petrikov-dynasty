@@ -42,6 +42,8 @@ function NodeCard({
   node: any;
   onSelect: (n: any) => void;
 }) {
+  const [imgError, setImgError] = useState(false);
+
   return (
     <motion.div
       whileHover={{ scale: 1.1 }}
@@ -51,13 +53,18 @@ function NodeCard({
       }}
       className="w-56 h-[320px] cursor-pointer bg-gradient-to-b from-[#0f2a44] to-black rounded-2xl border border-yellow-500/30 flex flex-col overflow-hidden"
     >
-      <div className="w-full h-[220px] overflow-hidden">
-        <img
-          src={node.photo || "/photos/default.jpg"}
-          className="w-full h-full object-cover"
-        />
+      {/* 🔥 IMAGE */}
+      <div className="w-full h-[220px] overflow-hidden bg-gradient-to-b from-[#0f2a44] to-black">
+        {node.photo && !imgError && (
+          <img
+            src={node.photo}
+            onError={() => setImgError(true)}
+            className="w-full h-full object-cover"
+          />
+        )}
       </div>
 
+      {/* 🔥 INFO */}
       <div className="flex flex-col items-center justify-center flex-1 bg-black">
         <span className="text-2xl text-yellow-300 font-semibold">
           {node.name}
@@ -253,31 +260,42 @@ export default function Page() {
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             onClick={(e) => e.stopPropagation()}
-            className="w-[30vw] max-w-[800px] bg-gradient-to-b from-[#0f2a44] to-black rounded-3xl border border-yellow-500/30 p-8 text-center relative"
+            className="
+                w-[30vw] h-auto max-w-[1100px]
+                bg-gradient-to-b from-[#0f2a44] via-[#0a1c2f] to-black
+                rounded-3xl shadow-[0_0_50px_rgba(255,200,0,0.25)]
+                flex flex-col items-center justify-center text-center
+                border border-yellow-500/30 p-10
+            "
           >
             <button
               onClick={() => setSelectedNode(null)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-yellow-400 text-xl"
+              className="absolute top-4 right-4 text-gray-400 hover:text-yellow-400 text-2xl"
             >
               ✕
             </button>
 
-            <img
-              src={selectedNode.photo || "/photos/default.jpg"}
-              className="w-full h-[300px] object-cover rounded-xl mb-4"
-            />
+            <div className="w-full h-[60%] overflow-hidden flex items-center justify-center mb-3">
+              <img
+                src={selectedNode.photo || "/photos/default.jpg"}
+                className="w-full h-full object-cover"
+              />
+            </div>
 
-            <h2 className="text-2xl text-yellow-300 font-semibold">
+            <h2 className="text-[24px] font-semibold text-yellow-300">
               {selectedNode.fullName || selectedNode.name}
             </h2>
 
-            <p className="text-yellow-500/60 mt-2">
-              {selectedNode.role || "-"}
+            <p className="text-[16px] text-yellow-500/60 mt-0">
+              {selectedNode.dob || "-"}
             </p>
 
-            <p className="text-yellow-500/60">
+            <p className="text-[16px] text-yellow-500/60 mb-0">
               {selectedNode.nationality || "-"}
             </p>
+
+            <div className="w-2/3 h-[2px] bg-gradient-to-r from-transparent via-yellow-400 to-transparent mt-2 opacity-80" />
+            
           </motion.div>
         </div>
       )}
