@@ -144,7 +144,7 @@ export default function Home() {
   const router = useRouter();
   const containerRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [scale, setScale] = useState(0.6);
+  const [scale, setScale] = useState(0.5);
   const [bounds, setBounds] = useState({
     left: -1000,
     right: 1000,
