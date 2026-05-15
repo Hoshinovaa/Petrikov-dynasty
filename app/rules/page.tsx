@@ -10,7 +10,7 @@ export default function PetrikovRulesPage() {
     {
       title: "II. Struktur & Kepatuhan",
       points: [
-        "Kekuasaan tertinggi berada pada Tetua Petrikov",
+        "Kekuasaan tertinggi berada pada OG Petrikov",
         "Keputusan bersifat final dan mutlak",
         "Loyalitas adalah kewajiban utama",
         "Pembangkangan dianggap pengkhianatan",
