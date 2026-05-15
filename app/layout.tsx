@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Analytics } from "@vercel/analytics/next"
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -20,12 +20,24 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>{children}</body>
+      <body
+        className={`
+          ${geistSans.variable}
+          ${geistMono.variable}
+          overflow-x-hidden
+          bg-black
+          text-white
+          antialiased
+        `}
+      >
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }

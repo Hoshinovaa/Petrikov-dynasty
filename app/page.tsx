@@ -35,13 +35,50 @@ export default function LandingPage() {
           From the cold lands of Russia to the streets of San Andreas.
         </p>
 
-        {/* ✅ BUTTON FIX */}
+        {/* MAIN BUTTON */}
         <div className="mt-10">
           <Link href="/dynasty">
-            <button className="px-10 py-4 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-semibold rounded-full shadow-[0_0_25px_rgba(255,200,0,0.6)] hover:scale-105 transition">
+            <button className="px-15 py-4 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-semibold rounded-full shadow-[0_0_25px_rgba(255,200,0,0.6)] hover:scale-105 transition duration-300">
               View Petrikov Dynasty
             </button>
           </Link>
+        </div>
+
+        {/* EXTRA BUTTONS */}
+        <div className="mt-6 flex flex-col md:flex-row items-center justify-center gap-4">
+
+          {/* RULES BUTTON */}
+          <Link href="/rules">
+            <button className="
+              px-8 py-3
+              border border-yellow-400/40
+              text-yellow-300
+              rounded-full
+              bg-yellow-500/10
+              hover:bg-yellow-400/20
+              hover:scale-105
+              transition duration-300
+            ">
+              Family Rules
+            </button>
+          </Link>
+
+          {/* GALLERY BUTTON */}
+          <Link href="/gallery">
+            <button className="
+              px-8 py-3
+              border border-purple-400/40
+              text-purple-200
+              rounded-full
+              bg-purple-500/10
+              hover:bg-purple-400/20
+              hover:scale-105
+              transition duration-300
+            ">
+              Gallery
+            </button>
+          </Link>
+
         </div>
 
       </section>

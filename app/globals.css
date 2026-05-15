@@ -35,6 +35,7 @@ body {
   scrollbar-width: none;
 }
 
+
 html, body {
-  overflow: hidden;
+  overflow-x: hidden;
 }
