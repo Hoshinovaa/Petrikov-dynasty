@@ -35,7 +35,13 @@ function findPerson(node: any, slug: string): any | null {
 }
 
 /* CARD */
-function NodeCard({ node, onSelect, }: { node: any; onSelect: (n: any) => void; }) {
+function NodeCard({
+  node,
+  onSelect,
+}: {
+  node: any;
+  onSelect: (n: any) => void;
+}) {
   const [imgError, setImgError] = useState(false);
 
   return (
@@ -63,7 +69,14 @@ function NodeCard({ node, onSelect, }: { node: any; onSelect: (n: any) => void; 
         <span className="text-3xl text-yellow-300 font-semibold">
           {node.name}
         </span>
-        <span className="text-yellow-500/60 text-2xl mt-1">
+        
+        <span
+          className={`text-yellow-500/60 mt-1 text-center leading-tight ${
+            node.role === "Granddaughter-in-law"
+              ? "text-[20px]"
+              : "text-2xl"
+          }`}
+        >
           {node.role}
         </span>
       </div>
@@ -77,17 +90,22 @@ function renderChildren(node: any, onSelect: (n: any) => void) {
 
   return (
     <>
+      {/* LINE DOWN */}
       <div className="w-[2px] h-12 bg-yellow-500/40" />
 
       <div className="flex flex-col items-center">
+
+        {/* HORIZONTAL CONNECTOR */}
         {node.children.length > 1 && (
           <div className="w-full h-[2px] bg-yellow-500/40" />
         )}
 
+        {/* CHILDREN */}
         <div className="flex gap-16">
           {node.children.map((child: any, i: number) => (
             <div key={i} className="flex flex-col items-center">
 
+              {/* VERTICAL LINE */}
               <div
                 className={`w-[2px] h-10 ${
                   child.relation === "angkat"
@@ -96,8 +114,32 @@ function renderChildren(node: any, onSelect: (n: any) => void) {
                 }`}
               />
 
-              <NodeCard node={child} onSelect={onSelect} />
+              {/* CHILD + PARTNER */}
+              <div className="flex items-center gap-6">
 
+                {/* CHILD */}
+                <NodeCard node={child} onSelect={onSelect} />
+
+                {/* PARTNER */}
+                {child.partner && (
+                  <>
+                    <div
+                      className={`w-10 h-[2px] ${
+                        child.partnerType === "angkat"
+                          ? "border-t-2 border-dashed border-yellow-500/40"
+                          : "bg-yellow-500/40"
+                      }`}
+                    />
+
+                    <NodeCard
+                      node={child.partner}
+                      onSelect={onSelect}
+                    />
+                  </>
+                )}
+              </div>
+
+              {/* NEXT GENERATION */}
               {renderChildren(child, onSelect)}
             </div>
           ))}
@@ -118,14 +160,25 @@ function Tree({
   return (
     <div className="flex flex-col items-center">
 
-      {/* NODE + PARTNER */}
+      {/* ROOT NODE + PARTNER */}
       <div className="flex items-center gap-6">
+
         <NodeCard node={node} onSelect={onSelect} />
 
         {node.partner && (
           <>
-            <div className="w-10 h-[2px] bg-yellow-500/40" />
-            <NodeCard node={node.partner} onSelect={onSelect} />
+            <div
+              className={`w-10 h-[2px] ${
+                node.partnerType === "angkat"
+                  ? "border-t-2 border-dashed border-yellow-500/40"
+                  : "bg-yellow-500/40"
+              }`}
+            />
+
+            <NodeCard
+              node={node.partner}
+              onSelect={onSelect}
+            />
           </>
         )}
       </div>
@@ -139,11 +192,12 @@ function Tree({
 export default function Page() {
   const router = useRouter();
   const params = useParams();
-    
+
   const [selectedNode, setSelectedNode] = useState<any | null>(null);
   const [scale, setScale] = useState(0.75);
 
   const containerRef = useRef<HTMLDivElement>(null);
+
   const [bounds, setBounds] = useState({
     left: -1000,
     right: 1000,
@@ -159,6 +213,7 @@ export default function Page() {
       if (!containerRef.current) return;
 
       const rect = containerRef.current.getBoundingClientRect();
+
       const baseLimit = 2000;
       const scaleFactor = scale * 1000;
 
@@ -171,7 +226,9 @@ export default function Page() {
     };
 
     updateBounds();
+
     window.addEventListener("resize", updateBounds);
+
     return () => window.removeEventListener("resize", updateBounds);
   }, [scale]);
 
@@ -209,20 +266,35 @@ export default function Page() {
 
         <h1
           onClick={() => router.push("/")}
-          className="text-yellow-400 cursor-pointer hover:text-yellow-300 transition mx-auto text-xl font-bold cursor-pointer"
+          className="text-yellow-400 hover:text-yellow-300 transition mx-auto text-xl font-bold cursor-pointer"
         >
           PETRIKOV
         </h1>
 
         <div className="absolute right-10 flex gap-3">
-          <button onClick={() => setScale((s) => s + 0.2)} className="px-3 py-1 bg-yellow-500/20 rounded text-yellow-400">+</button>
-          <button onClick={() => setScale((s) => s - 0.2)} className="px-3 py-1 bg-yellow-500/20 rounded text-yellow-400">-</button>
+          <button
+            onClick={() => setScale((s) => s + 0.2)}
+            className="px-3 py-1 bg-yellow-500/20 rounded text-yellow-400"
+          >
+            +
+          </button>
+
+          <button
+            onClick={() => setScale((s) => s - 0.2)}
+            className="px-3 py-1 bg-yellow-500/20 rounded text-yellow-400"
+          >
+            -
+          </button>
         </div>
       </nav>
 
       {/* CANVAS */}
       <div ref={containerRef} className="w-full h-full overflow-hidden">
-        <section onWheel={handleWheel} className="w-full h-full flex items-center justify-center">
+
+        <section
+          onWheel={handleWheel}
+          className="w-full h-full flex items-center justify-center"
+        >
           <motion.div
             drag
             dragConstraints={bounds}
@@ -238,7 +310,10 @@ export default function Page() {
             }}
           >
             <div className="absolute inset-0 flex items-center justify-center">
-              <Tree node={person} onSelect={setSelectedNode} />
+              <Tree
+                node={person}
+                onSelect={setSelectedNode}
+              />
             </div>
           </motion.div>
         </section>
@@ -255,11 +330,11 @@ export default function Page() {
             animate={{ scale: 1, opacity: 1 }}
             onClick={(e) => e.stopPropagation()}
             className="
-                w-[30vw] h-auto max-w-[1100px]
-                bg-gradient-to-b from-[#0f2a44] via-[#0a1c2f] to-black
-                rounded-3xl shadow-[0_0_50px_rgba(255,200,0,0.25)]
-                flex flex-col items-center justify-center text-center
-                border border-yellow-500/30 p-10
+              w-[30vw] h-auto max-w-[1100px]
+              bg-gradient-to-b from-[#0f2a44] via-[#0a1c2f] to-black
+              rounded-3xl shadow-[0_0_50px_rgba(255,200,0,0.25)]
+              flex flex-col items-center justify-center text-center
+              border border-yellow-500/30 p-10
             "
           >
             <button
@@ -289,7 +364,6 @@ export default function Page() {
             </p>
 
             <div className="w-2/3 h-[2px] bg-gradient-to-r from-transparent via-yellow-400 to-transparent mt-2 opacity-80" />
-            
           </motion.div>
         </div>
       )}
