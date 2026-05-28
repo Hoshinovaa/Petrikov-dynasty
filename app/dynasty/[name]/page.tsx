@@ -1,7 +1,11 @@
 "use client";
 
 import { ArrowBigLeft } from "lucide-react";
-import { familydata } from "@/data/familydata";
+import {
+  familydata,
+  lylaExtraChildren,
+} from "@/data/familydata";
+
 import { motion } from "framer-motion";
 import { useRouter, useParams } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
@@ -51,7 +55,20 @@ function NodeCard({
         e.stopPropagation();
         onSelect(node);
       }}
-      className="w-56 h-[360px] bg-gradient-to-b from-[#0f2a44] via-[#0a1c2f] to-black rounded-2xl shadow-[0_0_50px_rgba(255,200,0,0.25)] border border-yellow-500/30 flex flex-col overflow-hidden"
+      className="
+        w-56 h-[360px]
+        bg-gradient-to-b
+        from-[#0f2a44]
+        via-[#0a1c2f]
+        to-black
+
+        rounded-2xl
+        shadow-[0_0_50px_rgba(255,200,0,0.25)]
+        border border-yellow-500/30
+
+        flex flex-col
+        overflow-hidden
+      "
     >
       {/* IMAGE */}
       <div className="w-full h-[220px] overflow-hidden bg-gradient-to-b from-[#0f2a44] to-black">
@@ -66,10 +83,11 @@ function NodeCard({
 
       {/* INFO */}
       <div className="flex flex-col items-center justify-center flex-1 bg-black">
+
         <span className="text-3xl text-yellow-300 font-semibold">
           {node.name}
         </span>
-        
+
         <span
           className={`text-yellow-500/60 mt-1 text-center leading-tight ${
             node.role === "Granddaughter-in-law"
@@ -79,6 +97,7 @@ function NodeCard({
         >
           {node.role}
         </span>
+
       </div>
     </motion.div>
   );
@@ -102,6 +121,7 @@ function renderChildren(node: any, onSelect: (n: any) => void) {
 
         {/* CHILDREN */}
         <div className="flex gap-16">
+
           {node.children.map((child: any, i: number) => (
             <div key={i} className="flex flex-col items-center">
 
@@ -117,10 +137,11 @@ function renderChildren(node: any, onSelect: (n: any) => void) {
               {/* CHILD + PARTNER */}
               <div className="flex items-center gap-6">
 
-                {/* CHILD */}
-                <NodeCard node={child} onSelect={onSelect} />
+                <NodeCard
+                  node={child}
+                  onSelect={onSelect}
+                />
 
-                {/* PARTNER */}
                 {child.partner && (
                   <>
                     <div
@@ -137,12 +158,15 @@ function renderChildren(node: any, onSelect: (n: any) => void) {
                     />
                   </>
                 )}
+
               </div>
 
               {/* NEXT GENERATION */}
               {renderChildren(child, onSelect)}
+
             </div>
           ))}
+
         </div>
       </div>
     </>
@@ -160,10 +184,13 @@ function Tree({
   return (
     <div className="flex flex-col items-center">
 
-      {/* ROOT NODE + PARTNER */}
+      {/* ROOT */}
       <div className="flex items-center gap-6">
 
-        <NodeCard node={node} onSelect={onSelect} />
+        <NodeCard
+          node={node}
+          onSelect={onSelect}
+        />
 
         {node.partner && (
           <>
@@ -181,10 +208,12 @@ function Tree({
             />
           </>
         )}
+
       </div>
 
       {/* CHILDREN */}
       {renderChildren(node, onSelect)}
+
     </div>
   );
 }
@@ -193,7 +222,9 @@ export default function Page() {
   const router = useRouter();
   const params = useParams();
 
-  const [selectedNode, setSelectedNode] = useState<any | null>(null);
+  const [selectedNode, setSelectedNode] =
+    useState<any | null>(null);
+
   const [scale, setScale] = useState(0.75);
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -206,13 +237,25 @@ export default function Page() {
   });
 
   const name = params?.name as string;
+
   const person = findPerson(familydata, name);
+
+  /* LYLA EXTRA CHILDREN */
+  const processedPerson =
+    person?.slug === "lyla"
+      ? {
+          ...person,
+
+          children: [...lylaExtraChildren],
+        }
+      : person;
 
   useEffect(() => {
     const updateBounds = () => {
       if (!containerRef.current) return;
 
-      const rect = containerRef.current.getBoundingClientRect();
+      const rect =
+        containerRef.current.getBoundingClientRect();
 
       const baseLimit = 2000;
       const scaleFactor = scale * 1000;
@@ -229,7 +272,8 @@ export default function Page() {
 
     window.addEventListener("resize", updateBounds);
 
-    return () => window.removeEventListener("resize", updateBounds);
+    return () =>
+      window.removeEventListener("resize", updateBounds);
   }, [scale]);
 
   const handleWheel = (e: React.WheelEvent) => {
@@ -243,7 +287,7 @@ export default function Page() {
     });
   };
 
-  if (!person) {
+  if (!processedPerson) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-black text-white">
         Data tidak ditemukan
@@ -259,7 +303,19 @@ export default function Page() {
 
         <button
           onClick={() => router.push("/dynasty")}
-          className="absolute left-10 w-10 h-10 flex items-center justify-center rounded-full border border-yellow-500/30 bg-black/40 hover:bg-yellow-500/20 transition"
+          className="
+            absolute left-10
+            w-10 h-10
+            flex items-center justify-center
+
+            rounded-full
+            border border-yellow-500/30
+
+            bg-black/40
+            hover:bg-yellow-500/20
+
+            transition
+          "
         >
           <ArrowBigLeft className="w-6 h-6 text-yellow-400" />
         </button>
@@ -272,6 +328,7 @@ export default function Page() {
         </h1>
 
         <div className="absolute right-10 flex gap-3">
+
           <button
             onClick={() => setScale((s) => s + 0.2)}
             className="px-3 py-1 bg-yellow-500/20 rounded text-yellow-400"
@@ -285,16 +342,21 @@ export default function Page() {
           >
             -
           </button>
+
         </div>
       </nav>
 
       {/* CANVAS */}
-      <div ref={containerRef} className="w-full h-full overflow-hidden">
+      <div
+        ref={containerRef}
+        className="w-full h-full overflow-hidden"
+      >
 
         <section
           onWheel={handleWheel}
           className="w-full h-full flex items-center justify-center"
         >
+
           <motion.div
             drag
             dragConstraints={bounds}
@@ -310,12 +372,15 @@ export default function Page() {
             }}
           >
             <div className="absolute inset-0 flex items-center justify-center">
+
               <Tree
-                node={person}
+                node={processedPerson}
                 onSelect={setSelectedNode}
               />
+
             </div>
           </motion.div>
+
         </section>
       </div>
 
@@ -330,11 +395,25 @@ export default function Page() {
             animate={{ scale: 1, opacity: 1 }}
             onClick={(e) => e.stopPropagation()}
             className="
-              w-[30vw] h-auto max-w-[1100px]
-              bg-gradient-to-b from-[#0f2a44] via-[#0a1c2f] to-black
-              rounded-3xl shadow-[0_0_50px_rgba(255,200,0,0.25)]
-              flex flex-col items-center justify-center text-center
-              border border-yellow-500/30 p-10
+              w-[30vw]
+              h-auto
+              max-w-[1100px]
+
+              bg-gradient-to-b
+              from-[#0f2a44]
+              via-[#0a1c2f]
+              to-black
+
+              rounded-3xl
+              shadow-[0_0_50px_rgba(255,200,0,0.25)]
+
+              flex flex-col
+              items-center
+              justify-center
+              text-center
+
+              border border-yellow-500/30
+              p-10
             "
           >
             <button
@@ -345,14 +424,20 @@ export default function Page() {
             </button>
 
             <div className="w-full h-[60%] overflow-hidden flex items-center justify-center mb-3">
+
               <img
-                src={selectedNode.photo || "/photos/default.jpg"}
+                src={
+                  selectedNode.photo ||
+                  "/photos/default.jpg"
+                }
                 className="w-full h-full object-cover"
               />
+
             </div>
 
             <h2 className="text-[24px] font-semibold text-yellow-300">
-              {selectedNode.fullName || selectedNode.name}
+              {selectedNode.fullName ||
+                selectedNode.name}
             </h2>
 
             <p className="text-[16px] text-yellow-500/60 mt-0">
@@ -364,6 +449,7 @@ export default function Page() {
             </p>
 
             <div className="w-2/3 h-[2px] bg-gradient-to-r from-transparent via-yellow-400 to-transparent mt-2 opacity-80" />
+
           </motion.div>
         </div>
       )}

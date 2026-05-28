@@ -296,3 +296,27 @@ export const familydata: NodeType = {
     },
   ],
 };
+
+export const lylaExtraChildren: NodeType[] = [
+  {
+    name: "Aether",
+    slug: "aether",
+    fullName: "Aether Petrikov",
+    dob: "11 June",
+    nationality: "Russian",
+    photo: "/photos/aether.png",
+    role: "Adopted Child",
+    relation: "angkat",
+  },
+
+  {
+    name: "Elena",
+    slug: "elena",
+    fullName: "Elena Petrikov",
+    dob: "02 February",
+    nationality: "German",
+    photo: "/photos/elena.png",
+    role: "Adopted Child",
+    relation: "angkat",
+  },
+];
